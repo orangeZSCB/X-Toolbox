@@ -95,7 +95,7 @@
                 var password = $('#registerPassword').val();
 
                 $.ajax({
-                    url: 'http://127.0.0.1:5000/register',
+                    url: 'https://toolboxapi.rawsite.icu/register',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ username: username, password: password }),
@@ -116,7 +116,7 @@
                 var password = $('#loginPassword').val();
 
                 $.ajax({
-                    url: 'http://127.0.0.1:5000/login',
+                    url: 'https://toolboxapi.rawsite.icu/login',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ username: username, password: password }),

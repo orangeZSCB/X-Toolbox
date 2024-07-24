@@ -100,7 +100,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({ username: username, password: password }),
                     success: function(response) {
-                        alert(response.message);
+                        alert("注册成功咯！请再登录\n非常抱歉，虽然这个操作很反人类但是\n我懒得加Cookie Set了(⊙﹏⊙)");
                     },
                     error: function(xhr) {
                         alert(xhr.responseJSON.message);
@@ -125,6 +125,7 @@
                         if (response.message === '登录成功') {
                             // 保存用户名到 cookie 中
                             Cookies.set('username', username);
+			    window.location.href = '/console';
                         }
                     },
                     error: function(xhr) {

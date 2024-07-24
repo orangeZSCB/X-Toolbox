@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en" style="background: url(bg1.svg) center;background-size: cover;background-attachment: fixed;background-color: #dce3f3;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查询</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="height:100%;background: none;display: flex;justify-content: center;">
+    <div class="box card" style="width: 40%;position: absolute;top:calc(50% - 125px);height: 200px;min-width: 300px;margin: 0;">
+        <p class="tit">查询</p>
+        <div class="body">
+            <div style="display: flex;">
+                <p style="width: 50px;margin: 0;padding: 5px 0;">域名</p>
+                <input id="domain" type="text" class="inp" placeholder="请输入域名" style="flex-grow: 1;" value=""></div>
+            <loading style="position: absolute;right: 80px;bottom: 10px;opacity: 0;transition: 100ms;" id="loading">
+                <svg width="28px" height="28px" viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="7px"></circle><circle cx="8px" cy="8px" r="6px"></circle></svg>
+            </loading>
+            <a class="btn" style="position: absolute;right: 10px;bottom: 10px;" onclick="queryDomain()">继续</a>
+        </div>
+    </div>
+    <script src="./tapple/jq.min.js"></script>
+    <script>
+        function queryDomain() {
+            const domain = document.getElementById('domain').value;
+            if (domain) {
+                fetch(`http://183.232.249.240:44825/get?domain=${domain}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.rank) {
+                            alert(`域名: ${domain}\n橙 ICP 备 ${data.rank} 号\n如果想要将自己的域名信息嵌入到其他地方，请直接嵌入如下代码：\n<iframe src="http://zsccodelnc.cn/ocp/card.html?domain=${domain}" width="100" height="100" ></iframe>\nwidth 是宽，height 是高，请按照自己需求更改引号内数据。`);
+                        } else {
+                            alert(`错误: ${data.error} 请反馈给 orange@zsccodelnc.cn`);
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error fetching data 请按 F12 打开 Console (控制台) 反馈给 orange@zsccodelnc.cn');
+                        console.error('Error:', error);
+                    });
+            } else {
+                alert('请输入一个域名！');
+            }
+        }
+    </script>
+</body>
+</html>

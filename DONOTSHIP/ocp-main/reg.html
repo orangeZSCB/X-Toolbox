@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" style="background: url(bg1.svg) center;background-size: cover;background-attachment: fixed;background-color: #dce3f3;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>橙 ICP 备案 - 登记</title>
+    <link rel="stylesheet" href="style.css">
+    <script src='https://recaptcha.net/recaptcha/api.js?render='></script>
+</head>
+<body style="height:100%;background: none;display: flex;justify-content: center;">
+    <div class="box card" style="width: 40%;position: absolute;top:calc(50% - 125px);height: 425px;min-width: 500px;margin: 0;">
+        <h1><p>信息填写</p></h1>
+        <div class="body" style="padding: 20px;">
+            <div style="display: flex;">
+                <p style="width: 50px;margin: 0;padding: 5px 0;">域名</p>
+                <input id="domain" type="text" class="inp" style="flex-grow: 1;" value=""></div>
+
+            <div style="display: flex;">
+                <p style="width: 50px;margin: 0;padding: 5px 0;">站长</p>
+                <input id="owner" type="text" class="inp" style="flex-grow: 1;" value=""></div>
+
+            <div style="display: flex;">
+                <p style="width: 50px;margin: 0;padding: 5px 0;">站名</p>
+                <input id="sitename" type="text" class="inp" style="flex-grow: 1;" value=""></div>
+
+            <div style="display: flex;">
+                <p style="width: 50px;margin: 0;padding: 5px 0;">简介</p>
+                <input id="description" type="text" class="inp" style="flex-grow: 1;" value=""></div>
+                <del><p style="margin: 0;padding: 5px 0;">Sensei填好了吗？那还得麻烦你做一下下面这道题哦</p></del>
+
+	    <div class="g-recaptcha" data-sitekey="6LfXD_QpAAAAAE3TL7f0YVSkQMN-WVM_Kt_heN3O"></div>
+            <loading style="position: absolute;right: 80px;bottom: 10px;opacity: 0;transition: 100ms;" id="loading">
+                <svg width="28px" height="28px" viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="7px"></circle><circle cx="8px" cy="8px" r="6px"></circle></svg>
+            </loading>
+            <a class="btn" style="position: absolute;right: 10px;bottom: 10px;" onclick="submitForm()">继续</a>
+        </div>
+    </div>
+    <script src="./tapple/jq.min.js"></script>
+    <script src="./tapple/scroll.js"></script>
+    <script>
+        function submitForm() {
+            if (grecaptcha.getResponse() === "") {
+                alert("sensei等等啊sensei，你还没完成reCAPTCHA呢！");
+                alert("omg its a Google reCAPTCHA");
+            } else {
+                const data = {
+                    domain: document.getElementById('domain').value,
+                    sitename: document.getElementById('sitename').value,
+                    description: document.getElementById('description').value,
+                    owner: document.getElementById('owner').value
+                };
+
+                $('#loading').css('opacity', 1);
+
+                fetch('http://183.232.249.240:44825/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    $('#loading').css('opacity', 0);
+                    if (data.error) {
+                        alert('啊啊啊！是个错误！Orange说请把这个让sensei交给他: ' + data.error);
+                    } else {
+                        alert('好耶，sensei！ 你是第 ' + data.rank + ' 个加入橙 ICP 的！');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('啊啊啊！是个错误！请稍后再试试吧sensei');
+                    $('#loading').css('opacity', 0);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
